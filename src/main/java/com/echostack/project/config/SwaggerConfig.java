@@ -23,14 +23,15 @@ public class SwaggerConfig {
     @Bean
     public Docket testApi(@Value("${swagger.api.tile}") String title
                           ,@Value("${swagger.api.description}") String description
-                          ,@Value("${swagger.api.version}") String version) {
+                          ,@Value("${swagger.api.version}") String version
+                          ,@Value("${swagger.api.groupName}") String groupName) {
         ApiInfo apiInfo = new ApiInfoBuilder()
                 .title(title)
                 .description(description)
                 .version(version)
                 .build();
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("test")
+                .groupName(groupName)
                 .genericModelSubstitutes(DeferredResult.class)
                 .useDefaultResponseMessages(false)
                 .forCodeGeneration(true)

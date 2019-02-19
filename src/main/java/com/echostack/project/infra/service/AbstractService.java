@@ -19,6 +19,7 @@ public abstract class AbstractService<T> implements Service<T> {
     @Autowired
     protected Mapper<T> mapper;
 
+
     private Class<T> modelClass;    // 当前泛型真实类型的Class
 
     public AbstractService() {
@@ -26,8 +27,8 @@ public abstract class AbstractService<T> implements Service<T> {
         modelClass = (Class<T>) pt.getActualTypeArguments()[0];
     }
 
-    public void save(T model) {
-        mapper.insertSelective(model);
+    public int save(T model) {
+        return mapper.insertSelective(model);
     }
 
     public void save(List<T> models) {

@@ -1,4 +1,4 @@
-package com.company.project.core;
+package com.echostack.project.infra.dto;
 
 import com.alibaba.fastjson.JSON;
 

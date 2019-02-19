@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.company.project.core.ProjectConstant.*;
+import static com.echostack.project.infra.constant.ProjectConstant.*;
 
 /**
  * 代码生成器，根据数据表名称生成对应的Model、Mapper、Service、Controller简化开发。
@@ -91,7 +91,7 @@ public class CodeGenerator {
 
         SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration = new SqlMapGeneratorConfiguration();
         sqlMapGeneratorConfiguration.setTargetProject(PROJECT_PATH + RESOURCES_PATH);
-        sqlMapGeneratorConfiguration.setTargetPackage("mapper");
+        sqlMapGeneratorConfiguration.setTargetPackage("config/mapper");
         context.setSqlMapGeneratorConfiguration(sqlMapGeneratorConfiguration);
 
         JavaClientGeneratorConfiguration javaClientGeneratorConfiguration = new JavaClientGeneratorConfiguration();
@@ -180,8 +180,8 @@ public class CodeGenerator {
             if (!file.getParentFile().exists()) {
                 file.getParentFile().mkdirs();
             }
-            //cfg.getTemplate("controller-restful.ftl").process(data, new FileWriter(file));
-            cfg.getTemplate("controller.ftl").process(data, new FileWriter(file));
+            //cfg.getTemplate("web-restful.ftl").process(data, new FileWriter(file));
+            cfg.getTemplate("web.ftl").process(data, new FileWriter(file));
 
             System.out.println(modelNameUpperCamel + "Controller.java 生成成功");
         } catch (Exception e) {

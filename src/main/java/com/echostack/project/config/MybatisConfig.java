@@ -1,29 +1,25 @@
-package com.company.project.configurer;
+package com.echostack.project.config;
 
 import com.github.pagehelper.PageHelper;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import tk.mybatis.spring.mapper.MapperScannerConfigurer;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-import static com.company.project.core.ProjectConstant.*;
+import static com.echostack.project.infra.constant.ProjectConstant.*;
 
 /**
  * Mybatis & Mapper & PageHelper 配置
  */
 @Configuration
-public class MybatisConfigurer {
+public class MybatisConfig {
 
     @Bean
     public SqlSessionFactory sqlSessionFactoryBean(DataSource dataSource) throws Exception {
@@ -42,9 +38,9 @@ public class MybatisConfigurer {
         //添加插件
         factory.setPlugins(new Interceptor[]{pageHelper});
 
-        //添加XML目录
-        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        factory.setMapperLocations(resolver.getResources("classpath:mapper/*.xml"));
+//        //添加XML目录
+//        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+//        factory.setMapperLocations(resolver.getResources("classpath:config/mapper/**.xml"));
         return factory.getObject();
     }
 

@@ -7,7 +7,7 @@ Spring Boot API Project Seed 是一个基于Spring Boot & MyBatis的种子项目
 - 最佳实践的项目结构、配置文件、精简的POM
 - 统一响应结果封装及生成工具
 - 统一异常处理
-- 简单的接口签名认证（暂时屏蔽，考虑更加安全的签名方式）
+- 简单的接口签名认证（暂时屏蔽，考虑jwt+redis+spring-security,加一套shiro的可选方案）
 - 常用基础方法抽象封装
 - 使用Druid Spring Boot Starter 集成Druid数据库连接池与监控
 - 使用FastJsonHttpMessageConverter，提高JSON序列化速度
@@ -21,7 +21,7 @@ Spring Boot API Project Seed 是一个基于Spring Boot & MyBatis的种子项目
 4. manager：对接于第三方接口或平台的封装层，业务逻辑下沉，如soa调用
 5. model：模型数据对象，一般为pojo
 
-    1）dao：dao层往外传输或者接收的对象（这一层对象可以复用dto）
+    1）entity：数据库实体对象
     
     2）dto：service层或者manager层往外传输或者接收的对象
     

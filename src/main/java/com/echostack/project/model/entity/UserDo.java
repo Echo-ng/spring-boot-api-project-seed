@@ -1,4 +1,4 @@
-package com.echostack.project.model.dao;
+package com.echostack.project.model.entity;
 
 import lombok.Data;
 

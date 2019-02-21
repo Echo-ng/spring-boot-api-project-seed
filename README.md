@@ -20,8 +20,11 @@ Spring Boot API Project Seed 是一个基于Spring Boot & MyBatis的种子项目
 3. infra：基础框架内容，高复用代码
 4. manager：对接于第三方接口或平台的封装层，业务逻辑下沉，如soa调用
 5. model：模型数据对象，一般为pojo
+
     1）dao：dao层往外传输或者接收的对象（这一层对象可以复用dto）
+    
     2）dto：service层或者manager层往外传输或者接收的对象
+    
     3）vo：用于展现层的对象
 6. service：服务层对象，实现大部分业务逻辑
 7. web：控制层，一般存放controller对象

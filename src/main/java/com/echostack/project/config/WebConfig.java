@@ -20,9 +20,14 @@ import com.echostack.project.infra.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
@@ -35,6 +40,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * Spring MVC 配置
  */
 @Configuration
+@EnableWebSecurity
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     private final Logger logger = LoggerFactory.getLogger(WebConfig.class);

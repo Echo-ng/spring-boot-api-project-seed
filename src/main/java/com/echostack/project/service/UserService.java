@@ -1,5 +1,5 @@
 package com.echostack.project.service;
-import com.echostack.project.model.User;
+import com.echostack.project.model.entity.User;
 import com.echostack.project.infra.service.Service;
 
 

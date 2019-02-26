@@ -19,16 +19,16 @@ import javax.annotation.Resource;
  */
 @Service
 @Transactional
-public class UserServiceImpl extends AbstractService<User> implements UserService,UserDetailsService {
+public class UserServiceImpl extends AbstractService<User> implements UserService {
     @Autowired
     private UserMapper userMapper;
 
-    @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userMapper.findByUsername(s);
-        if (user == null) {
-            throw new UsernameNotFoundException("用户名不存在");
-        }
-        return user;
-    }
+//    @Override
+//    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+//        User user = userMapper.findByUsername(s);
+//        if (user == null) {
+//            throw new UsernameNotFoundException("用户名不存在");
+//        }
+//        return user;
+//    }
 }

@@ -17,7 +17,7 @@
     </collection>
   </resultMap>
 
-  <select id="findByUsername" parameterType="String" resultType="com.echostack.project.model.entity.User">
+  <select id="findByUsername" parameterType="String" resultMap="BaseResultMap">
     SELECT * FROM USER where username = #{username}
   </select>
 </mapper>

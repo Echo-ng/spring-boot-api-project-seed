@@ -26,10 +26,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        return new UserServiceImpl();
 //    }
 
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 //    @Autowired
 //    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
@@ -54,10 +54,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.formLogin()
 //                http.httpBasic()
+                .loginPage("/authentication/require")
+                .loginProcessingUrl("/signin")
                 .and()
                 .authorizeRequests()
+                .antMatchers("/authentication/require", "/login.html")
+                .permitAll()
                 .anyRequest()
-                .authenticated();
+                .authenticated()
+                .and().csrf().disable();
 //        http.csrf().disable()//关闭csrf保护
 //                .authorizeRequests()//返回请求的安全级别的去安全细节
 //                .antMatchers(HttpMethod.GET, //静态资源允许无条件访问

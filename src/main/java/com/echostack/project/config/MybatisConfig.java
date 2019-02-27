@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import tk.mybatis.spring.mapper.MapperScannerConfigurer;
 
 import javax.sql.DataSource;
@@ -20,6 +21,7 @@ import static com.echostack.project.infra.constant.ProjectConstant.*;
  * Mybatis & Mapper & PageHelper 配置
  */
 @Configuration
+@EnableTransactionManagement
 public class MybatisConfig {
 
     @Bean

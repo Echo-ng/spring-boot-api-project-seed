@@ -32,9 +32,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 
 /**
  * Spring MVC 配置
@@ -50,11 +48,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         //加载swagger2的静态资源
-        registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/META-INF/resources/","classpath:static","classpath:templates","classpath:public");
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
+
+
 
     //使用阿里 FastJson 作为JSON MessageConverter
     @Override
@@ -83,15 +83,15 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                     result.setCode(ResultCode.FAIL).setMessage(e.getMessage());
                     logger.info(e.getMessage());
                 } else if (e instanceof NoHandlerFoundException) {
-                    result.setCode(ResultCode.NOT_FOUND).setMessage("接口 [" + request.getRequestURI() + "] 不存在");
+                    result.setCode(ResultCode.NOT_FOUND).setMessage("资源 [" + request.getRequestURI() + "] 不存在");
                 } else if (e instanceof ServletException) {
                     result.setCode(ResultCode.FAIL).setMessage(e.getMessage());
                 } else {
-                    result.setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("接口 [" + request.getRequestURI() + "] 内部错误，请联系管理员");
+                    result.setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("资源 [" + request.getRequestURI() + "] 内部错误，请联系管理员");
                     String message;
                     if (handler instanceof HandlerMethod) {
                         HandlerMethod handlerMethod = (HandlerMethod) handler;
-                        message = String.format("接口 [%s] 出现异常，方法：%s.%s，异常摘要：%s",
+                        message = String.format("资源 [%s] 出现异常，方法：%s.%s，异常摘要：%s",
                                 request.getRequestURI(),
                                 handlerMethod.getBean().getClass().getName(),
                                 handlerMethod.getMethod().getName(),
@@ -203,4 +203,14 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 //
 //        return ip;
 //    }
+
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("index");
+        registry.addViewController("/login").setViewName("login");
+//        registry.addRedirectViewController("/login","login.html");
+//        registry.addViewController("/login").;
+        super.addViewControllers(registry);
+    }
 }

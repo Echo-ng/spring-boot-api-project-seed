@@ -10,7 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -70,8 +70,8 @@ public class UserController {
     @ApiOperation(value = "查询用户信息", notes = "根据用户id查询用户信息")
     public Result detail(@ApiParam(required = true, value = "用户id")
                          @PathVariable Integer id) {
-        User user = userService.findById(id);
-        return ResultGenerator.genSuccessResult(user);
+//        User user = userService.findById(id);
+        return ResultGenerator.genSuccessResult(null);
     }
 
 //    @PreAuthorize("hasAuthority('ROLE_ADMIN')")

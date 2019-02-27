@@ -8,10 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
 
 
 /**
@@ -19,16 +18,21 @@ import javax.annotation.Resource;
  */
 @Service
 @Transactional
-public class UserServiceImpl extends AbstractService<User> implements UserService {
+public class UserServiceImpl extends AbstractService<User> implements UserService,UserDetailsService {
     @Autowired
     private UserMapper userMapper;
 
-//    @Override
-//    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-//        User user = userMapper.findByUsername(s);
-//        if (user == null) {
-//            throw new UsernameNotFoundException("用户名不存在");
-//        }
-//        return user;
-//    }
+    @Autowired
+    public PasswordEncoder passwordEncoder;
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        User user = userMapper.findByUsername(s);
+        if (user == null) {
+            throw new UsernameNotFoundException("用户名不存在");
+        }else{
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        return user;
+    }
 }

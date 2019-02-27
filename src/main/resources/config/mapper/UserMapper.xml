@@ -18,6 +18,6 @@
   </resultMap>
 
   <select id="findByUsername" parameterType="String" resultMap="BaseResultMap">
-    SELECT * FROM USER where username = #{username}
+    SELECT * FROM T_USER where username = #{username}
   </select>
 </mapper>

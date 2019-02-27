@@ -50,7 +50,7 @@ public class TestController {
         if (savedRequest != null) {
             String targetUrl = savedRequest.getRedirectUrl();
             if (StringUtils.endsWithIgnoreCase(targetUrl, ".html"))
-                redirectStrategy.sendRedirect(request, response, "/login.html");
+                redirectStrategy.sendRedirect(request, response, "/login");
         }
         return "访问的资源需要身份认证！";
     }

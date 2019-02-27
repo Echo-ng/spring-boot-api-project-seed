@@ -27,7 +27,15 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userMapper.findByUsername(s);
+//        User user = userMapper.findByUsername(s);
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("echo");
+        user.setPassword("123456");
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
+        user.setEnabled(true);
         if (user == null) {
             throw new UsernameNotFoundException("用户名不存在");
         }else{

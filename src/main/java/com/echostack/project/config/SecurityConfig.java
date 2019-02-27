@@ -1,5 +1,7 @@
 package com.echostack.project.config;
 
+import com.echostack.project.component.MyAuthenticationFailureHandler;
+import com.echostack.project.component.MyAuthenticationSucessHandler;
 import com.echostack.project.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +27,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    protected UserDetailsService userDetailsService(){
 //        return new UserServiceImpl();
 //    }
+
+    @Autowired
+    MyAuthenticationSucessHandler authenticationSuccessHandler;
+
+
+    @Autowired
+    MyAuthenticationFailureHandler authenticationFailureHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -56,9 +65,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                http.httpBasic()
                 .loginPage("/authentication/require")
                 .loginProcessingUrl("/signin")
+                .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationFailureHandler)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/authentication/require", "/login.html")
+                .antMatchers("/authentication/require", "/login")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

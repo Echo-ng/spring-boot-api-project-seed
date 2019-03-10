@@ -36,6 +36,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
         user.setAccountNonLocked(true);
         user.setCredentialsNonExpired(true);
         user.setEnabled(true);
+        user.setMobile("17777777777");
         if (user == null) {
             throw new UsernameNotFoundException("用户名不存在");
         }else{

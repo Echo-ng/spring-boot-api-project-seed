@@ -1,7 +1,6 @@
 package com.echostack.project.config;
 
-import com.echostack.project.component.MyAuthenticationFailureHandler;
-import com.echostack.project.component.MyAuthenticationSucessHandler;
+import com.echostack.project.component.*;
 import com.echostack.project.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +13,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 /**
  * @Author: Echo
@@ -35,9 +39,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     MyAuthenticationFailureHandler authenticationFailureHandler;
 
+    @Autowired
+    ValidateCodeFilter validateCodeFilter;
+
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    private SmsCodeFilter smsCodeFilter;
+
+    @Autowired
+    private SmsAuthenticationConfig smsAuthenticationConfig;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+
+
+
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
+        jdbcTokenRepository.setCreateTableOnStartup(false);
+        return jdbcTokenRepository;
     }
 
 //    @Autowired
@@ -61,19 +88,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin()
+        http.addFilterBefore(validateCodeFilter,UsernamePasswordAuthenticationFilter.class)
+                .formLogin()
 //                http.httpBasic()
                 .loginPage("/authentication/require")
                 .loginProcessingUrl("/signin")
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler)
                 .and()
+                .rememberMe()
+                .tokenRepository(persistentTokenRepository())
+                .tokenValiditySeconds(3600)
+                .and()
                 .authorizeRequests()
-                .antMatchers("/authentication/require", "/login")
+                .antMatchers("/authentication/require"
+                        , "/login"
+                        , "/image/code"
+                        , "/sms/code")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
-                .and().csrf().disable();
+                .and().csrf().disable()
+                .apply(smsAuthenticationConfig);
 //        http.csrf().disable()//关闭csrf保护
 //                .authorizeRequests()//返回请求的安全级别的去安全细节
 //                .antMatchers(HttpMethod.GET, //静态资源允许无条件访问

@@ -49,7 +49,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         //加载swagger2的静态资源
         registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/META-INF/resources/","classpath:static","classpath:templates","classpath:public");
+                .addResourceLocations("classpath:/META-INF/resources/","classpath:/static/","classpath:/templates/","classpath:/public/");
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }

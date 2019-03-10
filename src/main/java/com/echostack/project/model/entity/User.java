@@ -24,6 +24,9 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "mobile")
+    private String mobile;
+
     @Column(name = "last_password_reset_date")
     private Date lastPasswordResetDate;
 

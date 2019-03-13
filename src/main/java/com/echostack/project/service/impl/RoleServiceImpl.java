@@ -1,7 +1,6 @@
 package com.echostack.project.service.impl;
 
 import com.echostack.project.dao.RoleMapper;
-import com.echostack.project.infra.service.AbstractService;
 import com.echostack.project.model.entity.Role;
 import com.echostack.project.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;

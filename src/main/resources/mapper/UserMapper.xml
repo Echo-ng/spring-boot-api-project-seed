@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.echostack.project.dao.UserMapper">
+    <resultMap id="user" type="com.echostack.project.model.entity.User">
+        <id property="id" column="id" />
+        <result property="username" column="username" />
+        <result property="password" column="password" />
+        <result property="lastPasswordResetDate" column="last_password_reset_date" javaType="java.util.Date" />
+        <result property="gmtCreate" column="gmt_create" javaType="java.util.Date" />
+        <result property="gmtModified" column="gmt_modified" javaType="java.util.Date" />
+        <result property="isAccountNonExpired" column="is_account_non_expired" />
+        <result property="isAccountNonLocked" column="is_account_non_locked" />
+        <result property="isCredentialsNonExpired" column="is_credential_non_expired" />
+        <result property="isEnabled" column="is_enabled" />
+        <collection property="roles" ofType="com.echostack.project.model.entity.Role" column="id">
+
+        </collection>
+    </resultMap>
+    <select id="findByUsername"
+</mapper>

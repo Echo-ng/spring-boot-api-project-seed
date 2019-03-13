@@ -3,7 +3,6 @@ package com.echostack.project.service.impl;
 import com.echostack.project.dao.UserMapper;
 import com.echostack.project.model.entity.User;
 import com.echostack.project.service.UserService;
-import com.echostack.project.infra.service.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

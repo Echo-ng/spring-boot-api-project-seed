@@ -1,21 +1,17 @@
 package com.echostack.project.config;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import com.github.pagehelper.PageHelper;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
-import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import tk.mybatis.spring.mapper.MapperScannerConfigurer;
 
 import javax.sql.DataSource;
 import java.util.Properties;
-
-import static com.echostack.project.infra.constant.ProjectConstant.*;
 
 /**
  * Mybatis & Mapper & PageHelper 配置
@@ -24,11 +20,17 @@ import static com.echostack.project.infra.constant.ProjectConstant.*;
 @EnableTransactionManagement
 public class MybatisConfig {
 
+    @ConfigurationProperties(prefix = "spring.datasource")
+    @Bean
+    public DataSource druid() {
+        return new DruidDataSource();
+    }
+
     @Bean
     public SqlSessionFactory sqlSessionFactoryBean(DataSource dataSource) throws Exception {
         SqlSessionFactoryBean factory = new SqlSessionFactoryBean();
         factory.setDataSource(dataSource);
-        factory.setTypeAliasesPackage(MODEL_PACKAGE);
+//        factory.setTypeAliasesPackage(MODEL_PACKAGE);
 
         //配置分页插件，详情请查阅官方文档
         PageHelper pageHelper = new PageHelper();
@@ -47,21 +49,21 @@ public class MybatisConfig {
         return factory.getObject();
     }
 
-    @Bean
-    public MapperScannerConfigurer mapperScannerConfigurer() {
-        MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
-        mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactoryBean");
-        mapperScannerConfigurer.setBasePackage(MAPPER_PACKAGE);
-
-        //配置通用Mapper，详情请查阅官方文档
-        Properties properties = new Properties();
-        properties.setProperty("mappers", MAPPER_INTERFACE_REFERENCE);
-        properties.setProperty("notEmpty", "false");//insert、update是否判断字符串类型!='' 即 test="str != null"表达式内是否追加 and str != ''
-        properties.setProperty("IDENTITY", "MYSQL");
-        mapperScannerConfigurer.setProperties(properties);
-
-        return mapperScannerConfigurer;
-    }
+//    @Bean
+//    public MapperScannerConfigurer mapperScannerConfigurer() {
+//        MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
+//        mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactoryBean");
+//        mapperScannerConfigurer.setBasePackage(MAPPER_PACKAGE);
+//
+//        //配置通用Mapper，详情请查阅官方文档
+//        Properties properties = new Properties();
+//        properties.setProperty("mappers", MAPPER_INTERFACE_REFERENCE);
+//        properties.setProperty("notEmpty", "false");//insert、update是否判断字符串类型!='' 即 test="str != null"表达式内是否追加 and str != ''
+//        properties.setProperty("IDENTITY", "MYSQL");
+//        mapperScannerConfigurer.setProperties(properties);
+//
+//        return mapperScannerConfigurer;
+//    }
 
 }
 

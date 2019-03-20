@@ -1,8 +1,13 @@
 package com.echostack.project.component;
 
+import com.echostack.project.model.entity.User;
+import com.echostack.project.service.impl.UserServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -20,7 +25,7 @@ import java.io.IOException;
 public class MyAuthenticationSucessHandler implements AuthenticationSuccessHandler {
 
     @Autowired
-    private ObjectMapper mapper;
+    private UserServiceImpl userService;
 
     private RequestCache requestCache = new HttpSessionRequestCache();
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
@@ -28,8 +33,8 @@ public class MyAuthenticationSucessHandler implements AuthenticationSuccessHandl
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         SavedRequest savedRequest = requestCache.getRequest(httpServletRequest, httpServletResponse);
+        String token = userService.saveUserLoginInfo((User) authentication.getPrincipal());
+        httpServletResponse.setHeader("Authorization",token);
         redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, savedRequest.getRedirectUrl());
-//        httpServletResponse.setContentType("application/json;charset=utf-8");
-//        httpServletResponse.getWriter().write(mapper.writeValueAsString(authentication.toString()));
     }
 }

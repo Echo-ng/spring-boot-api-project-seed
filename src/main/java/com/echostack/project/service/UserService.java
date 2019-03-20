@@ -18,4 +18,6 @@ public interface UserService {
 
     List<User> findAll();
 
+    String saveUserLoginInfo(User user);
+
 }

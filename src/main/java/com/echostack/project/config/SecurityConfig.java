@@ -3,6 +3,8 @@ package com.echostack.project.config;
 import com.echostack.project.component.*;
 import com.echostack.project.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -29,6 +31,7 @@ import javax.sql.DataSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
+    @Qualifier("userServiceImpl")
     private UserDetailsService userDetailsService;
 
     @Autowired
@@ -38,17 +41,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     MyAuthenticationFailureHandler authenticationFailureHandler;
 
-    @Autowired
-    ValidateCodeFilter validateCodeFilter;
-
-    @Autowired
-    private DataSource dataSource;
-
-    @Autowired
-    private SmsCodeFilter smsCodeFilter;
-
-    @Autowired
-    private SmsAuthenticationConfig smsAuthenticationConfig;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -76,28 +68,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(validateCodeFilter,UsernamePasswordAuthenticationFilter.class)
-                .formLogin()
+        http.formLogin()
 //                http.httpBasic()
                 .loginPage("/login")
                 .loginProcessingUrl("/signin")
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler)
                 .and()
-                .rememberMe()
-                .tokenRepository(persistentTokenRepository())
-                .tokenValiditySeconds(3600)
-                .and()
+//                .rememberMe()
+//                .tokenRepository(persistentTokenRepository())
+//                .tokenValiditySeconds(3600)
+//                .and()
                 .authorizeRequests()
-                .antMatchers("/authentication/require"
-                        , "/login"
-                        , "/image/code"
-                        , "/sms/code")
+                .antMatchers("signin"
+                        , "/login")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
-                .and().csrf().disable()
-                .apply(smsAuthenticationConfig);
+                .and().csrf().disable();
+//                .apply(smsAuthenticationConfig);
 //        http.csrf().disable()//关闭csrf保护
 //                .authorizeRequests()//返回请求的安全级别的去安全细节
 //                .antMatchers(HttpMethod.GET, //静态资源允许无条件访问

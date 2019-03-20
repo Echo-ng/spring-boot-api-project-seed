@@ -1,6 +1,10 @@
 package com.echostack.project.service.impl;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
 import com.echostack.project.dao.UserMapper;
+import com.echostack.project.infra.constant.Security;
 import com.echostack.project.model.entity.User;
 import com.echostack.project.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +27,7 @@ import java.util.List;
 @Transactional
 @Slf4j
 public class UserServiceImpl implements UserService,UserDetailsService {
+
     @Autowired
     private UserMapper userMapper;
 
@@ -72,5 +77,20 @@ public class UserServiceImpl implements UserService,UserDetailsService {
     @Override
     public List<User> findAll() {
         return this.userMapper.findAll();
+    }
+
+    @Override
+    public String saveUserLoginInfo(User user) {
+        String token = "";
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(Security.TOKEN_SECRET);
+            token = JWT.create()
+                    .withIssuer(Security.CLAIM_KEY)
+                    .sign(algorithm);
+        } catch (JWTCreationException exception){
+            String errorMsg = "创建token出错"+exception.getMessage();
+            log.error(errorMsg);
+        }
+        return token;
     }
 }

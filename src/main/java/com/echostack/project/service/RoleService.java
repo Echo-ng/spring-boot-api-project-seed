@@ -8,5 +8,5 @@ import com.echostack.project.model.entity.Role;
  * @Date: 2019/2/26 15:26
  * @Description:
  */
-public interface RoleService extends Service<Role> {
+public interface RoleService {
 }

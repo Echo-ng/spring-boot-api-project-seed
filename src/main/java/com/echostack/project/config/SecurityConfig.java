@@ -28,10 +28,8 @@ import javax.sql.DataSource;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    @Bean
-//    protected UserDetailsService userDetailsService(){
-//        return new UserServiceImpl();
-//    }
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Autowired
     MyAuthenticationSucessHandler authenticationSuccessHandler;
@@ -57,14 +55,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-//    @Autowired
-//    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-//        authenticationManagerBuilder
-//                // 设置UserDetailsService
-//                .userDetailsService(userDetailsService())
-//                // 使用BCrypt进行密码的hash
-//                .passwordEncoder(passwordEncoder());
-//    }
+    @Autowired
+    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder
+                // 设置UserDetailsService
+                .userDetailsService(userDetailsService)
+                // 使用BCrypt进行密码的hash
+                .passwordEncoder(passwordEncoder());
+    }
 
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -81,7 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(validateCodeFilter,UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
 //                http.httpBasic()
-                .loginPage("/authentication/require")
+                .loginPage("/login")
                 .loginProcessingUrl("/signin")
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler)

@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -23,30 +24,26 @@ import java.util.List;
 @RequestMapping("/user")
 @Api(tags = {"会员"})
 public class UserController {
+
     @Autowired
     private UserService userService;
 
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping
     @ApiOperation(value = "新增用户", notes = "新增用户信息")
     public Result add(@ApiParam(required = true, value = "用户信息")
                           @RequestBody User user) {
-        user.setGmtModified(new Date());
-        user.setGmtCreate(new Date());
-        userService.save(user);
+        userService.add(user);
         return ResultGenerator.genSuccessResult();
     }
 
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除用户", notes = "根据用户id删除用户")
     public Result delete(@ApiParam(required = true, value = "用户id")
-                             @PathVariable Integer id) {
+                             @PathVariable Long id) {
         userService.deleteById(id);
         return ResultGenerator.genSuccessResult();
     }
 
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_USER')")
     @PutMapping
     @ApiOperation(value = "更新用户", notes = "更新用户信息")
     public Result update(@ApiParam(required = true, value = "用户信息")
@@ -61,7 +58,7 @@ public class UserController {
     @ApiOperation(value = "查询用户信息", notes = "根据用户名称查询用户信息")
     public Result detail(@ApiParam(required = true, value = "用户名称")
                              @RequestParam String name) {
-        User user = userService.findBy("name",name);
+        User user = userService.findByUsername(name);
         return ResultGenerator.genSuccessResult(user);
     }
 
@@ -74,7 +71,6 @@ public class UserController {
         return ResultGenerator.genSuccessResult(null);
     }
 
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping
     @ApiOperation(value = "分页查询用户信息", notes = "根据当前页码和每页大小分页查询用户信息")
     public Result list(@ApiParam(required = true, value = "当前页码")

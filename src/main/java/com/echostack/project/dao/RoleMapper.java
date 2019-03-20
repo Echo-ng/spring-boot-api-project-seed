@@ -9,6 +9,6 @@ import com.echostack.project.model.entity.Role;
  */
 public interface RoleMapper {
 
-    Role selectByName(String name);
+//    Role selectByName(String name);
 
 }

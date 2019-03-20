@@ -25,9 +25,9 @@ public class User implements UserDetails {
     @Column(name = "last_password_reset_date")
     private Date lastPasswordResetDate;
 
-    private Date gmtCreate;
+    private Date gmtCreate = new Date();
 
-    private Date gmtModified;
+    private Date gmtModified = new Date();
 
     private boolean isAccountNonExpired;
 
@@ -37,16 +37,14 @@ public class User implements UserDetails {
 
     private boolean isEnabled;
 
-//    @ManyToMany(cascade = {CascadeType.REFRESH},fetch = FetchType.EAGER)
     private List<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-//        for (Role role : roles) {
-//            authorities.add(new SimpleGrantedAuthority(role.getName()));
-//        }
-        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+        }
         return authorities;
     }
 

@@ -1,15 +1,12 @@
 package com.echostack.project.component;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.echostack.project.infra.util.JwtTokenUtil;
 import com.echostack.project.service.UserService;
-import com.echostack.project.service.impl.UserServiceImpl;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -39,14 +36,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String username = jwtTokenUtil.parseToken(authToken).get("username").asString();
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = userService.loadUserByUsername(username);
-                if(jwtTokenUtil.validate(authToken)) {
-                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }else{
-                    jwtTokenUtil.del(authToken);
+                try{
+                    jwtTokenUtil.validate(authToken);
+                }catch (JWTVerificationException e) {
+//                    ServletUtil.responseWriter(httpServletResponse,ResultGenerator.genFailResult(e.getMessage()));
+                    httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED,e.getMessage());
                 }
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
+        }else{
+//            ServletUtil.responseWriter(httpServletResponse,ResultGenerator.genFailResult("token格式不符合规范"));
+            httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST,"格式不符合规范");
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }

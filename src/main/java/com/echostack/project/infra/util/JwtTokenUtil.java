@@ -91,23 +91,15 @@ public class JwtTokenUtil {
         return token;
     }
 
-    public boolean validate(String token) {
-        boolean bool = true;
-        try {
+    public void validate(String token) {
 
-            //设置秘钥
-            Algorithm algorithm = Algorithm.HMAC256(this.secret);
-            DecodedJWT jwt = JWT.require(algorithm)
-                                .acceptLeeway(1)
-                                .build().verify(token);
-            //从缓存判断是否存在
+        //设置秘钥
+        Algorithm algorithm = Algorithm.HMAC256(this.secret);
+        DecodedJWT jwt = JWT.require(algorithm)
+                            .acceptLeeway(1)
+                            .build().verify(token);
+        //从缓存判断是否存在
 //            redisTemplate.hasKey()
-        }catch (JWTVerificationException e){
-            String errorMsg = "验证token出错"+e.getMessage();
-            log.error(errorMsg);
-            bool = false;
-        }
-        return bool;
     }
 
     public void del(String authToken) {

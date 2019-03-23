@@ -1,10 +1,14 @@
 package com.echostack.project.component;
 
+import com.echostack.project.infra.util.JwtTokenUtil;
 import com.echostack.project.model.entity.User;
+import com.echostack.project.service.UserService;
 import com.echostack.project.service.impl.UserServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,10 +26,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class MyAuthenticationSucessHandler implements AuthenticationSuccessHandler {
+public class AuthSuccessHandler implements AuthenticationSuccessHandler {
+
+    @Value("${jwt.header.key}")
+    private String headerKey;
+    @Value("${jwt.token.head}")
+    private String tokenHead;
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+//    @Autowired
+//    private RedisTemplate redisTemplate;
 
     private RequestCache requestCache = new HttpSessionRequestCache();
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
@@ -33,8 +48,10 @@ public class MyAuthenticationSucessHandler implements AuthenticationSuccessHandl
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         SavedRequest savedRequest = requestCache.getRequest(httpServletRequest, httpServletResponse);
-        String token = userService.saveUserLoginInfo((User) authentication.getPrincipal());
-        httpServletResponse.setHeader("Authorization",token);
+        User user = (User) authentication.getPrincipal();
+//        redisTemplate.delete(user.getUsername());
+        String token = jwtTokenUtil.createToken(user);
+        httpServletResponse.setHeader(headerKey,tokenHead + token);
         redirectStrategy.sendRedirect(httpServletRequest, httpServletResponse, savedRequest.getRedirectUrl());
     }
 }

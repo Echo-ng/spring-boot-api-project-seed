@@ -26,7 +26,7 @@ import java.util.List;
 @Service
 @Transactional
 @Slf4j
-public class UserServiceImpl implements UserService,UserDetailsService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;

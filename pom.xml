@@ -39,6 +39,14 @@
                 <datasource.minIdle>15</datasource.minIdle>
                 <datasource.maxActive>150</datasource.maxActive>
                 <datasource.validationQuery>SELECT 1 FROM DUAL</datasource.validationQuery>
+                <redis.host>localhost</redis.host>
+                <redis.port>6379</redis.port>
+                <redis.password></redis.password>
+                <redis.pool.max-active>8</redis.pool.max-active>
+                <redis.pool.max-wait>-1ms</redis.pool.max-wait>
+                <redis.pool.max-idle>8</redis.pool.max-idle>
+                <redis.pool.min-idle>0</redis.pool.min-idle>
+                <redis.timeout>0</redis.timeout>
                 <server.port>8081</server.port>
                 <devtools.restart>true</devtools.restart>
                 <devtools.restart.additional-paths>src/main/java</devtools.restart.additional-paths>
@@ -62,6 +70,14 @@
                 <datasource.minIdle>15</datasource.minIdle>
                 <datasource.maxActive>150</datasource.maxActive>
                 <datasource.validationQuery>SELECT 1 FROM DUAL</datasource.validationQuery>
+                <redis.host>localhost</redis.host>
+                <redis.port>6379</redis.port>
+                <redis.password></redis.password>
+                <redis.pool.max-active>8</redis.pool.max-active>
+                <redis.pool.max-wait>-1ms</redis.pool.max-wait>
+                <redis.pool.max-idle>8</redis.pool.max-idle>
+                <redis.pool.min-idle>0</redis.pool.min-idle>
+                <redis.timeout>0</redis.timeout>
                 <server.port>8081</server.port>
                 <devtools.restart>true</devtools.restart>
                 <devtools.restart.additional-paths>src/main/java</devtools.restart.additional-paths>
@@ -85,6 +101,14 @@
                 <datasource.minIdle>15</datasource.minIdle>
                 <datasource.maxActive>150</datasource.maxActive>
                 <datasource.validationQuery>SELECT 1 FROM DUAL</datasource.validationQuery>
+                <redis.host>localhost</redis.host>
+                <redis.port>6379</redis.port>
+                <redis.password></redis.password>
+                <redis.pool.max-active>8</redis.pool.max-active>
+                <redis.pool.max-wait>-1ms</redis.pool.max-wait>
+                <redis.pool.max-idle>8</redis.pool.max-idle>
+                <redis.pool.min-idle>0</redis.pool.min-idle>
+                <redis.timeout>0</redis.timeout>
                 <server.port>8081</server.port>
                 <devtools.restart>true</devtools.restart>
                 <devtools.restart.additional-paths>src/main/java</devtools.restart.additional-paths>
@@ -120,6 +144,15 @@
             <groupId>org.springframework.social</groupId>
             <artifactId>spring-social-config</artifactId>
             <version>1.1.6.RELEASE</version>
+        </dependency>
+        <!--redis-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
